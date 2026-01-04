@@ -77,7 +77,7 @@
 - [x] Test one-handed usability
 
 ## Build & Deployment
-- [ ] Create final checkpoint
-- [ ] Test iOS build
-- [ ] Test Android build
-- [ ] Test web version
+- [x] Create final checkpoint
+- [x] Test iOS build
+- [x] Test Android build
+- [x] Test web version
