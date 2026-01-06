@@ -1,7 +1,3 @@
-/**
- * Hexagon component for Spelling Bee game
- */
-
 import { Pressable, Text, View, Platform } from 'react-native';
 import Animated, {
   useAnimatedStyle,
@@ -9,6 +5,7 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 import * as Haptics from 'expo-haptics';
+import Svg, { Polygon } from 'react-native-svg';
 import { cn } from '@/lib/utils';
 
 interface HexagonProps {
@@ -49,6 +46,13 @@ export function Hexagon({
     onPress();
   };
 
+  // Hexagon dimensions
+  const width = 100; // Increased touch target
+  const height = 110;
+  // Points for a pointy-topped hexagon
+  // centered in 100x110 box
+  const points = "50,0 100,27.5 100,82.5 50,110 0,82.5 0,27.5";
+
   return (
     <AnimatedPressable
       onPress={handlePress}
@@ -58,23 +62,25 @@ export function Hexagon({
       style={[
         animatedStyle,
         {
-          width: 70,
-          height: 80,
+          width: width,
+          height: height,
           justifyContent: 'center',
           alignItems: 'center',
         },
       ]}
     >
-      <View
-        className={cn(
-          'w-full h-full justify-center items-center rounded-lg',
-          isCenter ? 'bg-[#F6C915]' : 'bg-[#4B5563]',
-          disabled && 'opacity-50'
-        )}
-      >
+      <View className={cn("w-full h-full justify-center items-center relative", disabled && 'opacity-50')}>
+        <Svg height="100%" width="100%" viewBox="0 0 100 110" style={{ position: 'absolute' }}>
+          <Polygon
+            points={points}
+            fill={isCenter ? '#F6C915' : '#4B5563'}
+            stroke={isCenter ? '#EAB308' : '#374151'}
+            strokeWidth="2"
+          />
+        </Svg>
         <Text
           className={cn(
-            'text-3xl font-bold',
+            'text-3xl font-bold z-10',
             isCenter ? 'text-gray-900' : 'text-white'
           )}
         >

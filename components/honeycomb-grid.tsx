@@ -47,7 +47,7 @@ export function HoneycombGrid({
     <View className="items-center justify-center">
       <Animated.View style={animatedStyle}>
         {/* Top row: 2 hexagons */}
-        <View className="flex-row justify-center mb-[-10]">
+        <View className="flex-row justify-center mb-[-25]">
           <View className="mr-2">
             <Hexagon
               letter={outerLetters[0]}
@@ -67,7 +67,7 @@ export function HoneycombGrid({
         </View>
 
         {/* Middle row: 3 hexagons (left, center, right) */}
-        <View className="flex-row justify-center mb-[-10]">
+        <View className="flex-row justify-center mb-[-25]">
           <View className="mr-2">
             <Hexagon
               letter={outerLetters[2]}
