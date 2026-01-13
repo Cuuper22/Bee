@@ -251,6 +251,41 @@ export default function GameScreen() {
     generateNewPuzzle(preferences.difficulty);
   };
 
+  // Keyboard support for Web
+  useEffect(() => {
+    if (Platform.OS !== 'web') return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Don't trigger if specific modals are open or input is focused (if any)
+      if (settingsModalVisible || hintModalVisible || difficultyModalVisible) return;
+
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        handleEnter();
+      } else if (e.key === 'Backspace') {
+        e.preventDefault();
+        handleDelete();
+      } else if (e.key === ' ') {
+        e.preventDefault(); // Prevent scrolling
+        handleShuffle();
+      } else if (/^[a-zA-Z]$/.test(e.key)) {
+        e.preventDefault();
+        handleLetterPress(e.key.toUpperCase());
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [
+    handleEnter,
+    handleDelete,
+    handleShuffle,
+    handleLetterPress,
+    settingsModalVisible,
+    hintModalVisible,
+    difficultyModalVisible,
+  ]);
+
   if (loading) {
     return <LoadingScreen />;
   }
@@ -297,6 +332,8 @@ export default function GameScreen() {
       <View className="flex-row justify-between items-center px-6 py-3">
         <Pressable
           onPress={() => setSettingsModalVisible(true)}
+          accessibilityLabel="Open settings"
+          accessibilityRole="button"
           style={({ pressed }) => [
             {
               backgroundColor: '#4B5563',
@@ -312,6 +349,8 @@ export default function GameScreen() {
 
         <Pressable
           onPress={() => setHintModalVisible(true)}
+          accessibilityLabel={`Open hints, ${hintsAvailable === 999 ? 'unlimited' : hintsAvailable} remaining`}
+          accessibilityRole="button"
           style={({ pressed }) => [
             {
               backgroundColor: '#8B5CF6',
