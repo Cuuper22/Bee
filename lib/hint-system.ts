@@ -21,6 +21,7 @@ export interface FirstLetterHint {
 export interface DefinitionHint {
   word: string;
   definition: string;
+  rhyme?: string;
 }
 
 export interface TwoLetterHint {
@@ -63,18 +64,62 @@ export function generateFirstLetterHint(remainingWords: string[]): FirstLetterHi
 
 /**
  * Generate definition hint
- * Note: In a real app, you'd fetch from a dictionary API
- * For now, we'll return a placeholder
  */
-export function generateDefinitionHint(remainingWords: string[]): DefinitionHint | null {
+export function generateDefinitionHint(remainingWords: string[], definitions: Record<string, string> = {}): DefinitionHint | null {
   if (remainingWords.length === 0) return null;
   
-  const randomWord = remainingWords[Math.floor(Math.random() * remainingWords.length)];
+  // Try to find a word that has a definition
+  const wordsWithDefs = remainingWords.filter(word => definitions[word]);
+
+  // If no words have definitions (unlikely), fallback to any word
+  const targetWords = wordsWithDefs.length > 0 ? wordsWithDefs : remainingWords;
+  const randomWord = targetWords[Math.floor(Math.random() * targetWords.length)];
+
+  let definition = definitions[randomWord];
   
+  if (!definition) {
+    // Fallback if we somehow picked a word without a definition
+    definition = `A word that starts with "${randomWord[0].toUpperCase()}" and has ${randomWord.length} letters.`;
+  }
+
+  // Find a rhyme
+  const rhyme = findRhyme(randomWord, definitions);
+
   return {
     word: randomWord,
-    definition: `A word that starts with "${randomWord[0].toUpperCase()}" and has ${randomWord.length} letters.`,
+    definition,
+    rhyme: rhyme || undefined,
   };
+}
+
+/**
+ * Find a rhyming word from the dictionary
+ */
+function findRhyme(word: string, definitions: Record<string, string>): string | null {
+  const dictionaryWords = Object.keys(definitions);
+
+  // Try to find a rhyme by matching suffix
+  // We'll try matching 3 characters, then 2 if needed
+
+  const suffixes = [3, 2];
+
+  for (const len of suffixes) {
+    if (word.length <= len) continue;
+
+    const suffix = word.slice(-len);
+    const candidates = dictionaryWords.filter(w =>
+      w !== word &&
+      w.length >= len &&
+      w.endsWith(suffix) &&
+      w.length < 10 // Prefer shorter words for rhymes
+    );
+
+    if (candidates.length > 0) {
+      return candidates[Math.floor(Math.random() * candidates.length)];
+    }
+  }
+
+  return null;
 }
 
 /**
@@ -112,7 +157,11 @@ export function generateDifficultyMeterHint(remainingWords: string[]): Difficult
 /**
  * Generate hint based on type
  */
-export function generateHint(type: HintType, remainingWords: string[]): HintResult | null {
+export function generateHint(
+  type: HintType,
+  remainingWords: string[],
+  definitions: Record<string, string> = {}
+): HintResult | null {
   switch (type) {
     case 'word_length':
       return {
@@ -129,13 +178,14 @@ export function generateHint(type: HintType, remainingWords: string[]): HintResu
       };
     
     case 'definition':
-      const definitionHint = generateDefinitionHint(remainingWords);
+      const definitionHint = generateDefinitionHint(remainingWords, definitions);
       if (!definitionHint) return null;
       return {
         type,
         data: {
           word: definitionHint.word,
           definition: definitionHint.definition,
+          rhyme: definitionHint.rhyme,
         },
       };
     

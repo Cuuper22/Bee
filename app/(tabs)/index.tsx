@@ -16,7 +16,7 @@ import { LoadingScreen } from '@/components/loading-screen';
 import { HintModal } from '@/components/hint-modal';
 import { DifficultyModal } from '@/components/difficulty-modal';
 import { SettingsModal } from '@/components/settings-modal';
-import { loadDictionary } from '@/lib/dictionary-service';
+import { loadDictionary, loadDefinitions } from '@/lib/dictionary-service';
 import {
   generatePuzzle,
   isValidWord,
@@ -227,7 +227,10 @@ export default function GameScreen() {
       (word) => !foundWords.includes(word)
     );
 
-    const hint = generateHint(type, remainingWords);
+    // Load definitions for hints (will be cached)
+    const definitions = loadDefinitions();
+
+    const hint = generateHint(type, remainingWords, definitions);
     if (hint) {
       setLastHint(hint);
       if (preferences.difficulty !== 'practice') {
