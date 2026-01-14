@@ -5,6 +5,7 @@
 // Import the dictionary as a raw string
 // We'll process it at runtime
 let cachedDictionary: string[] | null = null;
+let cachedDefinitions: Record<string, string> | null = null;
 
 /**
  * Load dictionary from bundled asset
@@ -34,8 +35,28 @@ export async function loadDictionary(): Promise<string[]> {
 }
 
 /**
+ * Load definitions from bundled asset
+ */
+export function loadDefinitions(): Record<string, string> {
+  if (cachedDefinitions) {
+    return cachedDefinitions;
+  }
+
+  try {
+    // Require the dictionary JSON directly
+    const definitions = require('../assets/dictionary.json');
+    cachedDefinitions = definitions;
+    return definitions;
+  } catch (error) {
+    console.error('Failed to load definitions:', error);
+    return {};
+  }
+}
+
+/**
  * Clear cached dictionary (for testing)
  */
 export function clearDictionaryCache(): void {
   cachedDictionary = null;
+  cachedDefinitions = null;
 }
