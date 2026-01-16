@@ -26,6 +26,9 @@ const ROOT_DIR = resolve(__dirname, '..');
 const BUILD_DIR = join(ROOT_DIR, 'build');
 const DIST_DIR = join(ROOT_DIR, 'dist');
 
+// SEA sentinel fuse (required by postject)
+const SEA_SENTINEL_FUSE = 'NODE_SEA_FUSE_fce680ab2cc467b6e072b8b5df1996b2';
+
 // Color console output
 const colors = {
   reset: '\x1b[0m',
@@ -117,7 +120,17 @@ function bundleApplication() {
   
   // Bundle for SEA (CommonJS format for better compatibility)
   log('Creating SEA-compatible bundle...', colors.blue);
-  exec('npx esbuild server/_core/index.ts --platform=node --packages=bundle --bundle --format=cjs --outfile=dist/index.js --minify --tree-shaking=true');
+  const esbuildArgs = [
+    'server/_core/index.ts',
+    '--platform=node',
+    '--packages=bundle',
+    '--bundle',
+    '--format=cjs',
+    '--outfile=dist/index.js',
+    '--minify',
+    '--tree-shaking=true'
+  ].join(' ');
+  exec(`npx esbuild ${esbuildArgs}`);
   
   success('Application bundled successfully');
   
@@ -193,14 +206,14 @@ function createBinaryForCurrentPlatform() {
     if (platform === 'darwin') {
       // macOS requires code signing removal before injection
       exec(`codesign --remove-signature "${outputPath}"`, { stdio: 'ignore' });
-      exec(`npx postject "${outputPath}" NODE_SEA_BLOB "${blobPath}" --sentinel-fuse NODE_SEA_FUSE_fce680ab2cc467b6e072b8b5df1996b2 --macho-segment-name NODE_SEA`);
+      exec(`npx postject "${outputPath}" NODE_SEA_BLOB "${blobPath}" --sentinel-fuse ${SEA_SENTINEL_FUSE} --macho-segment-name NODE_SEA`);
       // Re-sign after injection (ad-hoc signature)
       exec(`codesign --sign - "${outputPath}"`, { stdio: 'ignore' });
     } else if (platform === 'win32') {
-      exec(`npx postject "${outputPath}" NODE_SEA_BLOB "${blobPath}" --sentinel-fuse NODE_SEA_FUSE_fce680ab2cc467b6e072b8b5df1996b2`);
+      exec(`npx postject "${outputPath}" NODE_SEA_BLOB "${blobPath}" --sentinel-fuse ${SEA_SENTINEL_FUSE}`);
     } else {
       // Linux
-      exec(`npx postject "${outputPath}" NODE_SEA_BLOB "${blobPath}" --sentinel-fuse NODE_SEA_FUSE_fce680ab2cc467b6e072b8b5df1996b2`);
+      exec(`npx postject "${outputPath}" NODE_SEA_BLOB "${blobPath}" --sentinel-fuse ${SEA_SENTINEL_FUSE}`);
     }
   } catch (err) {
     error(`Failed to inject blob: ${err.message}`);

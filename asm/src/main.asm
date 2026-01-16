@@ -317,6 +317,8 @@ load_demo_dictionary:
     
     ; Add some demo words
     ; Format: copy word to dictionary
+    ; NOTE: Strings are reversed due to little-endian byte order on x86-64
+    ;       'PARTY' must be stored as 'YTRAP' to read correctly in memory
     lea rdi, [valid_words]
     
     ; Word: "PARTY"
@@ -325,12 +327,12 @@ load_demo_dictionary:
     add rdi, 32
     
     ; Word: "EVERY"
-    mov rax, 'YREVE'
+    mov rax, 'YREVE'                     ; Reversed for little-endian
     mov [rdi], rax
     add rdi, 32
     
     ; Word: "PAPER"
-    mov rax, 'REPAP'
+    mov rax, 'REPAP'                     ; Reversed for little-endian
     mov [rdi], rax
     add rdi, 32
     
