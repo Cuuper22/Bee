@@ -60,3 +60,7 @@ Thumbs.db
 *.tgz
 *.tar.gz
 .cache/
+
+# Binary executable builds
+build/
+sea-prep.blob
