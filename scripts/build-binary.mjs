@@ -123,7 +123,7 @@ function bundleApplication() {
   const esbuildArgs = [
     'server/_core/index.ts',
     '--platform=node',
-    '--packages=bundle',
+    '--packages=external',
     '--bundle',
     '--format=cjs',
     '--outfile=dist/index.js',
