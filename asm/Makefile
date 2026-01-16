@@ -62,7 +62,7 @@ $(TARGET_SIZE_OPT): $(OBJECTS) | $(BUILD_DIR)
 	@echo "Tiny build complete: $@"
 	@ls -lh $@
 	@echo "Attempting UPX compression..."
-	-upx --best --ultra-brute $@ 2>/dev/null || echo "UPX not available (optional)"
+	-upx --best $@ 2>/dev/null || echo "UPX not available (optional)"
 	@ls -lh $@
 
 # Create build directory
