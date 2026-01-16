@@ -7,7 +7,7 @@
 set -e
 
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-ROOT_DIR="$( cd "$SCRIPT_DIR/.." && pwd )"
+ROOT_DIR="$SCRIPT_DIR"
 
 # Colors
 RED='\033[0;31m'
@@ -24,6 +24,25 @@ echo ""
 # ==============================================================================
 # Test Functions
 # ==============================================================================
+
+# Helper function to get file size in bytes (cross-platform)
+get_file_size() {
+    local file="$1"
+    if [ ! -f "$file" ]; then
+        echo "0"
+        return 1
+    fi
+    
+    # Try GNU stat first, then BSD stat
+    if stat -c%s "$file" 2>/dev/null; then
+        return 0
+    elif stat -f%z "$file" 2>/dev/null; then
+        return 0
+    else
+        # Fallback to du
+        du -b "$file" 2>/dev/null | cut -f1 || echo "0"
+    fi
+}
 
 test_nodejs_binary() {
     echo -e "${BLUE}Testing Node.js SEA Binary...${NC}"
@@ -76,7 +95,7 @@ test_nodejs_binary() {
     # Test 4: Binary size check
     echo ""
     echo "Test 4: Binary Size Verification"
-    SIZE_BYTES=$(stat -f%z build/bee-server-linux-x64 2>/dev/null || stat -c%s build/bee-server-linux-x64)
+    SIZE_BYTES=$(get_file_size "build/bee-server-linux-x64")
     SIZE_MB=$((SIZE_BYTES / 1024 / 1024))
     echo "  Size: ${SIZE_MB} MB"
     
@@ -141,11 +160,11 @@ test_assembly_game() {
     # Test 3: Size optimization
     echo ""
     echo "Test 3: Size Optimization Test"
-    NORMAL_SIZE=$(stat -f%z build/bee-game 2>/dev/null || stat -c%s build/bee-game)
+    NORMAL_SIZE=$(get_file_size "build/bee-game")
     echo "  Standard build: $((NORMAL_SIZE / 1024)) KB"
     
     if make tiny > /tmp/asm-tiny.log 2>&1; then
-        TINY_SIZE=$(stat -f%z build/bee-game-tiny 2>/dev/null || stat -c%s build/bee-game-tiny)
+        TINY_SIZE=$(get_file_size "build/bee-game-tiny")
         echo "  Optimized build: $((TINY_SIZE / 1024)) KB"
         echo "  Reduction: $(((NORMAL_SIZE - TINY_SIZE) * 100 / NORMAL_SIZE))%"
         echo -e "${GREEN}✓ Size optimization successful${NC}"
@@ -192,13 +211,13 @@ benchmark_binaries() {
     echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
     
     if [ -f "$ROOT_DIR/build/bee-server-linux-x64" ]; then
-        NODEJS_SIZE=$(stat -f%z "$ROOT_DIR/build/bee-server-linux-x64" 2>/dev/null || stat -c%s "$ROOT_DIR/build/bee-server-linux-x64")
+        NODEJS_SIZE=$(get_file_size "$ROOT_DIR/build/bee-server-linux-x64")
         NODEJS_MB=$((NODEJS_SIZE / 1024 / 1024))
         echo "  Node.js SEA:     ${NODEJS_MB} MB"
     fi
     
     if [ -f "$ROOT_DIR/asm/build/bee-game" ]; then
-        ASM_SIZE=$(stat -f%z "$ROOT_DIR/asm/build/bee-game" 2>/dev/null || stat -c%s "$ROOT_DIR/asm/build/bee-game")
+        ASM_SIZE=$(get_file_size "$ROOT_DIR/asm/build/bee-game")
         ASM_KB=$((ASM_SIZE / 1024))
         echo "  Assembly Game:   ${ASM_KB} KB"
         

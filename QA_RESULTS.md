@@ -6,7 +6,7 @@
 - **Node.js**: v20.19.6
 - **Assembler**: NASM 2.15.05 (when available)
 - **Graphics**: SDL2 2.0+ (when available)
-- **Test Date**: 2026-01-16
+- **Test Date**: 2024-01-16
 
 ---
 
