@@ -83,9 +83,17 @@ export function HintModal({
         return (
           <View className="bg-gray-700 rounded-lg p-4 mb-4">
             <Text className="text-white font-bold mb-2">Definition:</Text>
-            <Text className="text-gray-300 leading-relaxed">
+            <Text className="text-gray-300 leading-relaxed mb-4">
               {lastHint.data.definition}
             </Text>
+            {lastHint.data.rhyme && (
+              <>
+                <Text className="text-white font-bold mb-2">Rhymes with:</Text>
+                <Text className="text-[#F6C915] text-xl font-bold">
+                  {lastHint.data.rhyme}
+                </Text>
+              </>
+            )}
           </View>
         );
 
