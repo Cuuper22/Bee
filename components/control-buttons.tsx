@@ -33,6 +33,8 @@ export function ControlButtons({
       <Pressable
         onPress={() => handlePress(onDelete)}
         disabled={disabled}
+        accessibilityLabel="Delete last letter"
+        accessibilityRole="button"
         style={({ pressed }) => [
           {
             backgroundColor: '#4B5563',
@@ -52,6 +54,8 @@ export function ControlButtons({
       <Pressable
         onPress={() => handlePress(onShuffle)}
         disabled={disabled}
+        accessibilityLabel="Shuffle letters"
+        accessibilityRole="button"
         style={({ pressed }) => [
           {
             backgroundColor: '#4B5563',
@@ -71,6 +75,8 @@ export function ControlButtons({
       <Pressable
         onPress={() => handlePress(onEnter)}
         disabled={disabled}
+        accessibilityLabel="Submit word"
+        accessibilityRole="button"
         style={({ pressed }) => [
           {
             backgroundColor: '#F6C915',

@@ -258,16 +258,3 @@ function shuffleArray<T>(array: T[]): T[] {
   return array;
 }
 
-/**
- * Load dictionary from text file
- */
-export async function loadDictionary(): Promise<string[]> {
-  try {
-    // In React Native, we need to use require for assets
-    // This will be handled by the dictionary service
-    return [];
-  } catch (error) {
-    console.error('Failed to load dictionary:', error);
-    return [];
-  }
-}
