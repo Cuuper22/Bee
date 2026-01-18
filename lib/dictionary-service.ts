@@ -2,6 +2,10 @@
  * Dictionary service for loading and caching word list
  */
 
+import { Platform } from 'react-native';
+import { Asset } from 'expo-asset';
+import * as FileSystem from 'expo-file-system';
+
 // Import the dictionary as a raw string
 // We'll process it at runtime
 let cachedDictionary: string[] | null = null;
@@ -15,9 +19,26 @@ export async function loadDictionary(): Promise<string[]> {
   }
 
   try {
-    // Fetch the dictionary file from assets
-    const response = await fetch(require('../assets/words_alpha.txt'));
-    const text = await response.text();
+    let text = '';
+    const assetModule = require('../assets/words_alpha.txt');
+
+    if (Platform.OS === 'web') {
+      // On web, require returns a URL string
+      const response = await fetch(assetModule);
+      text = await response.text();
+    } else {
+      // On native, require returns an asset ID number
+      const asset = Asset.fromModule(assetModule);
+
+      // Ensure the asset is downloaded to the local filesystem
+      await asset.downloadAsync();
+
+      if (asset.localUri) {
+        text = await FileSystem.readAsStringAsync(asset.localUri);
+      } else {
+        throw new Error('Failed to resolve asset local URI');
+      }
+    }
     
     // Split into lines and filter
     const words = text
