@@ -60,3 +60,9 @@ Thumbs.db
 *.tgz
 *.tar.gz
 .cache/
+
+# Temporary Claude work dirs
+tmpclaude-*
+
+# Screenshots
+screenshots/
