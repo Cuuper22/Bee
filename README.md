@@ -1,57 +1,44 @@
 # Bee
 
-A spelling bee game. You get some letters, you make words. That is it.
+Cross-platform spelling bee game. React Native (Expo) frontend, Express backend, MySQL database.
 
-Built with React Native (Expo) so it runs on iOS, Android, and web from the same codebase.
+## What It Is
+
+A mobile spelling bee app. Words come at you, you spell them, you get points. Built as a monorepo with a shared TypeScript codebase.
+
+## Stack
+
+- **Frontend**: React Native + Expo (iOS, Android, web)
+- **Backend**: Express.js + tRPC (type-safe API)
+- **Database**: MySQL via Drizzle ORM
+- **Testing**: Vitest
+- **Styling**: Tailwind CSS (NativeWind)
+- **State**: TanStack Query
 
 ## Running It
 
 ```bash
 pnpm install
-pnpm dev
+pnpm dev          # starts Metro bundler + backend
 ```
 
-This starts both the Express backend and Expo dev server. The app opens on web at localhost:8081. For mobile, scan the QR code with Expo Go or run `pnpm android` / `pnpm ios`.
-
-### Other Commands
-
+For native builds:
 ```bash
-pnpm test          # vitest
-pnpm lint          # eslint
-pnpm format        # prettier
-pnpm db:push       # generate + run drizzle migrations
-pnpm check         # typecheck
+npx expo run:ios
+npx expo run:android
 ```
-
-## Tech Stack
-
-- **App**: React Native 0.81 + Expo 54, NativeWind (Tailwind for RN), expo-router
-- **Server**: Express + tRPC
-- **Database**: MySQL via Drizzle ORM
-- **State**: TanStack Query + tRPC React Query
-- **Auth**: JWT (jose)
-- **Testing**: Vitest
-- **Deploy**: Expo EAS
 
 ## Project Structure
 
 ```
-app/           # Expo Router pages (tabs, oauth, dev tools)
-components/    # UI - honeycomb grid, word display, score, hints, settings
-hooks/         # useAuth, useColors, useColorScheme
-server/        # Express + tRPC routers, Drizzle DB config
-shared/        # Shared types/utils between app and server
-lib/           # Client-side tRPC setup
-drizzle/       # Migration files
-scripts/       # QR code generator, utilities
-tests/         # Test files
+Bee/
+  app/          # React Native screens + navigation
+  server/       # Express backend + Drizzle ORM
+  components/   # Shared UI components
+  hooks/        # Custom React hooks
+  lib/          # Utilities
+  drizzle/      # DB migrations
 ```
-
-## How It Works
-
-You get a honeycomb grid of letters with one required center letter. Find as many valid words as you can using those letters. Words must be 4+ letters and always include the center letter. Letters can be reused.
-
-Difficulty settings, score tracking, hints if you get stuck.
 
 ## License
 
