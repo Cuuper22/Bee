@@ -1,5 +1,5 @@
 {
-  "name": "app-template",
+  "name": "bee-spelling-game",
   "version": "1.0.0",
   "private": true,
   "main": "expo-router/entry",
@@ -91,5 +91,21 @@
     "typescript": "~5.9.3",
     "vitest": "^2.1.9"
   },
-  "packageManager": "pnpm@9.12.0"
+  "packageManager": "pnpm@9.12.0",
+  "description": "Cross-platform Spelling Bee game built with React Native, Expo, and TypeScript. Features include difficulty modes, hint system, and persistent game state.",
+  "keywords": [
+    "spelling-bee",
+    "react-native",
+    "expo",
+    "game",
+    "word-game",
+    "typescript",
+    "mobile"
+  ],
+  "author": "Cuuper22",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Cuuper22/Bee.git"
+  }
 }
