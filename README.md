@@ -1,7 +1,3 @@
-## Why
-
-I like the NYT Spelling Bee. I wanted a version with better hints, adjustable difficulty, and actual accessibility (WCAG AAA). Also wanted to build something in React Native that runs everywhere — iOS, Android, web — from a single codebase with 80 tests proving it works.
-
 # Bee
 
 A Spelling Bee word game. React Native + Expo, runs on iOS, Android, and web.
