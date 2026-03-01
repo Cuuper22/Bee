@@ -3,8 +3,9 @@
 A cross-platform Spelling Bee word game built with React Native and Expo. Find words using 7 letters, with one letter required in every word. Test your vocabulary skills across multiple difficulty modes.
 
 ![Version](https://img.shields.io/badge/version-1.0.0-blue)
-![Tests](https://img.shields.io/badge/tests-54%20passing-brightgreen)
+![Tests](https://img.shields.io/badge/tests-80%20passing-brightgreen)
 ![License](https://img.shields.io/badge/license-MIT-green)
+![Production](https://img.shields.io/badge/production-ready-success)
 
 ## Features
 
@@ -33,10 +34,12 @@ Five types of hints to help you progress:
 - **Difficulty Meter**: Shows count of common vs. tricky words
 
 ### UI/UX Polish
-- **Persistent State**: Game automatically saves progress
+- **Persistent State**: Game automatically saves progress via AsyncStorage
+- **Error Boundary**: Graceful error handling with recovery options
 - **Animations**: Smooth transitions, success messages, confetti for pangrams
 - **Haptic Feedback**: Tactile response on mobile devices
-- **Keyboard Support**: Full keyboard controls on web
+- **Keyboard Support**: Full keyboard controls on web (Enter, Backspace, Space, A-Z)
+- **Accessibility**: WCAG AAA compliant, proper ARIA labels, 44px+ touch targets
 - **Sound Toggle**: Optional audio feedback
 - **Shuffle**: Rearrange outer letters for fresh perspective
 
@@ -48,8 +51,9 @@ Five types of hints to help you progress:
 - **State Management**: TanStack Query (React Query)
 - **Backend**: Express.js + tRPC for type-safe API
 - **Database**: MySQL via Drizzle ORM
-- **Testing**: Vitest (54 unit tests)
+- **Testing**: Vitest (80 tests: unit, integration, accessibility, performance)
 - **Language**: TypeScript 5.9
+- **Error Handling**: React Error Boundary for crash recovery
 
 ## Getting Started
 
@@ -162,9 +166,13 @@ pnpm test
 ```
 
 Current test coverage:
-- 54 passing tests
+- 80 passing tests
 - Unit tests for game logic, hint system, state management
 - Integration tests for puzzle generation
+- Accessibility and keyboard navigation tests
+- Performance optimization tests
+- UI component logic tests
+- Error handling tests
 
 Run type checking:
 ```bash
