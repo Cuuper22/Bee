@@ -5,7 +5,7 @@
 
 # Bee
 
-Spelling Bee word game - puzzle generation with quality gates, 370K dictionary, 5 hint types. React Native + Expo, cross-platform.
+Spelling Bee-style word game - puzzle generation with quality gates, 370K dictionary, 5 hint types. React Native + Expo, cross-platform.
 
 | Main Screen | Keyboard Input | After Submit |
 |:-----------:|:-------------:|:------------:|
