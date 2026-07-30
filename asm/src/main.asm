@@ -87,7 +87,7 @@ section .data
     msg_nice: db "Nice!", 0
     msg_great: db "Great!", 0
     msg_awesome: db "Awesome!", 0
-    msg_pangram: db "🎉 PANGRAM! +7 bonus", 0
+    msg_pangram: db "PANGRAM! +7 bonus", 0
     
     ; Rank names
     rank_beginner: db "Beginner", 0
@@ -317,48 +317,56 @@ load_demo_dictionary:
     
     ; Add some demo words
     ; Format: copy word to dictionary
-    ; NOTE: Strings are reversed due to little-endian byte order on x86-64
-    ;       'PARTY' must be stored as 'YTRAP' to read correctly in memory
+    ; Multi-character immediates are stored to memory in source order by NASM.
+    ; Terminate every slot explicitly so strcmp never reads into the next word.
     lea rdi, [valid_words]
     
     ; Word: "PARTY"
-    mov rax, 'YTRAP'                     ; Reversed for little-endian
+    mov rax, 'PARTY'
     mov [rdi], rax
+    mov byte [rdi + 5], 0
     add rdi, 32
     
     ; Word: "EVERY"
-    mov rax, 'YREVE'                     ; Reversed for little-endian
+    mov rax, 'EVERY'
     mov [rdi], rax
+    mov byte [rdi + 5], 0
     add rdi, 32
     
     ; Word: "PAPER"
-    mov rax, 'REPAP'                     ; Reversed for little-endian
+    mov rax, 'PAPER'
     mov [rdi], rax
+    mov byte [rdi + 5], 0
     add rdi, 32
     
     ; Word: "TREE"
-    mov eax, 'EERT'
+    mov eax, 'TREE'
     mov [rdi], eax
+    mov byte [rdi + 4], 0
     add rdi, 32
     
     ; Word: "TYPE"
-    mov eax, 'EPYT'
+    mov eax, 'TYPE'
     mov [rdi], eax
+    mov byte [rdi + 4], 0
     add rdi, 32
     
     ; Word: "AREA"
-    mov eax, 'AERA'
+    mov eax, 'AREA'
     mov [rdi], eax
+    mov byte [rdi + 4], 0
     add rdi, 32
     
     ; Word: "REAP"
-    mov eax, 'PAER'
+    mov eax, 'REAP'
     mov [rdi], eax
+    mov byte [rdi + 4], 0
     add rdi, 32
     
     ; Word: "TAPE"
-    mov eax, 'EPAT'
+    mov eax, 'TAPE'
     mov [rdi], eax
+    mov byte [rdi + 4], 0
     add rdi, 32
     
     ; Set valid words count
@@ -669,7 +677,7 @@ validate_word:
     ret
 
 ; ==============================================================================
-; String Compare (case-insensitive)
+; String Compare (case-sensitive; input is normalized to uppercase)
 ; ==============================================================================
 strcmp:
     push rbp
@@ -923,7 +931,7 @@ shuffle_letters:
     call get_random
     xor rdx, rdx
     mov rbx, 6
-    div rbx                              ; rax = random % 6
+    div rbx                              ; rax = quotient, rdx = random % 6
     
     ; Swap positions edx and (ecx-1)
     mov eax, ecx

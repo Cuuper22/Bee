@@ -4,7 +4,7 @@ This document explains the two binary executable implementations available for t
 
 ## Two Approaches to "Write Out Binary Executable"
 
-### 1. Node.js SEA Binary (Server) ✅ **COMPLETE**
+### 1. Node.js SEA Binary (Server) ✅ **WINDOWS VERIFIED**
 
 **Location**: Root directory (`scripts/build-binary.mjs`)
 
@@ -12,7 +12,7 @@ This document explains the two binary executable implementations available for t
 
 **Purpose**: Distribute the backend server without requiring Node.js installation or npm dependencies.
 
-**Size**: ~97 MB (includes full Node.js runtime)
+**Size**: 90.93 MB in the current Windows verification; 93.25 MB in the earlier recorded build
 
 **Usage**:
 ```bash
@@ -27,21 +27,17 @@ npm run build:binary
 
 ---
 
-### 2. Pure Assembly Game (Client) ✅ **COMPLETE**
+### 2. Pure Assembly Game (Client) ⚠️ **PROTOTYPE**
 
 **Location**: `asm/` directory
 
-**What it is**: The entire Spelling Bee game rewritten from scratch in pure x86-64 assembly language.
+**What it is**: A partial Spelling Bee game implementation in pure x86-64 assembly language.
 
 **Purpose**: Demonstrate the extreme edge of what's technically possible - the lightest, fastest, most optimized version possible.
 
-**Size**: ~8 KB (12,000x smaller than Node.js version!)
+**Size**: ~12 KB (7,771x smaller than the documented Node.js build)
 
-**Performance**: 
-- <1ms startup time (100x faster)
-- ~2MB memory usage (25x less)
-- 60 FPS graphics rendering
-- Direct CPU instructions, zero overhead
+**Performance**: Startup, memory, and frame-rate claims have not been re-measured. The current source still has TODOs for text rendering, complete shapes, and click hit-testing.
 
 **Usage**:
 ```bash
@@ -58,14 +54,14 @@ cd asm
 
 | Feature | Node.js SEA | Assembly |
 |---------|-------------|----------|
-| **Type** | Backend Server | Full Game Client |
+| **Type** | Backend Server | Game Prototype |
 | **Language** | TypeScript/JavaScript | x86-64 Assembly |
-| **Size** | ~97 MB | ~8 KB |
-| **Startup** | ~100 ms | <1 ms |
-| **Memory** | ~50 MB | ~2 MB |
+| **Size** | 90.93-93.25 MB recorded | ~12 KB documented |
+| **Startup** | Not re-measured | Not re-measured |
+| **Memory** | Not re-measured | Not re-measured |
 | **Platform** | Cross-platform | Linux x86-64 |
 | **Dependencies** | None (embedded runtime) | SDL2 only |
-| **Purpose** | Production server distribution | Extreme optimization demo |
+| **Purpose** | Server distribution after target testing | Optimization prototype |
 | **Level** | Professional | Expert/Extreme |
 
 ---
@@ -75,8 +71,8 @@ cd asm
 ### Use Node.js SEA if:
 - ✅ You need to distribute the backend server
 - ✅ You want cross-platform support (Linux, macOS, Windows)
-- ✅ You need a production-ready solution
-- ✅ You want something that "just works"
+- ✅ You can build and test on the target platform
+- ✅ You want a self-contained server executable
 
 ### Use Assembly version if:
 - ✅ You want the absolute smallest possible binary
@@ -118,8 +114,8 @@ npm run build:binary
 cd asm && ./build.sh
 
 # Results
-ls -lh build/bee-server-linux-x64    # ~97 MB
-ls -lh asm/build/bee-game             # ~8 KB
+ls -lh build/bee-server-linux-x64    # 93.25 MB in the documented build
+ls -lh asm/build/bee-game             # ~12 KB in the documented build
 ```
 
 ## Running Both
@@ -131,7 +127,7 @@ ls -lh asm/build/bee-game             # ~8 KB
 
 # Run Assembly game  
 ./asm/build/bee-game
-# Game window opens
+# Requires SDL2; runtime was not revalidated
 ```
 
 ---
@@ -155,4 +151,4 @@ ls -lh asm/build/bee-game             # ~8 KB
 
 **Built by an expert computer scientist exploring the edge of what's technically possible** 🚀
 
-*"From 97 MB to 8 KB - showing that real programmers can still optimize"*
+*"From 93.25 MB to ~12 KB in the documented build"*

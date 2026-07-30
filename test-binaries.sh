@@ -254,37 +254,43 @@ benchmark_binaries() {
 }
 
 generate_report() {
+    local size_summary
+    if [ -n "${RATIO:-}" ]; then
+        size_summary="Assembly is ${RATIO}x smaller (measured in this run)"
+    else
+        size_summary="Size ratio unavailable (one or both binaries missing)"
+    fi
+
     echo ""
     echo "╔══════════════════════════════════════════════════════════════════════════════╗"
     echo "║                           TEST REPORT SUMMARY                                ║"
     echo "╚══════════════════════════════════════════════════════════════════════════════╝"
     echo ""
     
-    cat << 'EOF'
+    cat << EOF
 Node.js SEA Binary:
   ✓ Build system functional
   ✓ Binary generation working
-  ✓ Reasonable file size (~93 MB)
-  ⚠ Runtime requires node_modules for external dependencies
-  → Status: Build system complete, deployment needs refinement
+  ✓ Dependencies embedded in the SEA bundle
+  → Status: Build verification required on each target platform
 
 Assembly Game:
-  ✓ Complete implementation (1,168 lines)
+  ✓ Assembly source builds (1,168 lines)
   ✓ Professional build system
   ✓ Size optimization available
-  ✓ Excellent code documentation
+  ✓ Documentation present
   ✓ Minimal dependencies (SDL2 only)
-  → Status: Production ready
+  → Status: Prototype; text, click handling, and player QA remain incomplete
 
 Performance Metrics:
-  Size:    Assembly is 12,000x smaller
-  Startup: Assembly is 100x faster (theoretical)
-  Memory:  Assembly uses 25x less (theoretical)
+  Size:    ${size_summary}
+  Startup: Not measured by this script
+  Memory:  Not measured by this script
 
-Overall Assessment: ✓ PASS
-  Both implementations are complete and functional.
-  Node.js SEA demonstrates modern bundling approach.
-  Assembly demonstrates extreme optimization.
+Overall Assessment: PARTIAL
+  Build checks can pass independently of end-user readiness.
+  Node.js SEA demonstrates the bundling approach.
+  Assembly remains an optimization prototype until gameplay is implemented and tested.
 EOF
     
     echo ""

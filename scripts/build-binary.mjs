@@ -15,7 +15,7 @@
  */
 
 import { execSync } from 'child_process';
-import { copyFileSync, mkdirSync, existsSync, readFileSync, writeFileSync, rmSync, chmodSync, statSync } from 'fs';
+import { copyFileSync, mkdirSync, existsSync, writeFileSync, rmSync, chmodSync, statSync } from 'fs';
 import { join, resolve } from 'path';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
@@ -67,7 +67,7 @@ function exec(command, options = {}) {
     return result;
   } catch (err) {
     error(`Command failed: ${command}`);
-    console.error(err.stdout || err.message);
+    console.error(err.stderr || err.stdout || err.message);
     throw err;
   }
 }
@@ -123,7 +123,7 @@ function bundleApplication() {
   const esbuildArgs = [
     'server/_core/index.ts',
     '--platform=node',
-    '--packages=external',
+    '--packages=bundle',
     '--bundle',
     '--format=cjs',
     '--outfile=dist/index.js',
@@ -140,13 +140,6 @@ function bundleApplication() {
     throw new Error('Bundle not created at ' + bundlePath);
   }
   
-  // Add a shebang for Unix-like systems
-  const bundleContent = readFileSync(bundlePath, 'utf-8');
-  if (!bundleContent.startsWith('#!')) {
-    const withShebang = '#!/usr/bin/env node\n' + bundleContent;
-    writeFileSync(bundlePath, withShebang, 'utf-8');
-    log('Added shebang to bundle', colors.blue);
-  }
 }
 
 function generateSEABlob() {

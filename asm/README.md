@@ -2,15 +2,15 @@
 
 <div align="center">
 
-**The Lightest, Fastest, Most Extreme Version of Spelling Bee**
+**An x86-64 Spelling Bee Prototype**
 
-*A complete game rewrite in x86-64 assembly language, pushing the boundaries of what's technically possible*
+*A low-level gameplay and rendering experiment with explicit unfinished areas*
 
 ![Language](https://img.shields.io/badge/language-Assembly%20x86--64-red)
 ![Assembler](https://img.shields.io/badge/assembler-NASM-blue)
 ![Platform](https://img.shields.io/badge/platform-Linux-lightgrey)
-![Size](https://img.shields.io/badge/binary%20size-~8KB-green)
-![Performance](https://img.shields.io/badge/performance-EXTREME-brightgreen)
+![Size](https://img.shields.io/badge/documented%20binary%20size-~12KB-green)
+![Status](https://img.shields.io/badge/status-prototype-yellow)
 
 </div>
 
@@ -18,36 +18,36 @@
 
 ## 🚀 What Is This?
 
-This is a **professional, production-ready** reimplementation of the entire Spelling Bee game in **pure x86-64 assembly language**. Not a toy project, not a proof of concept, but a **complete, playable game** that demonstrates the edge of what's technically possible when you write directly to the metal.
+This is an educational **x86-64 assembly prototype** of the Spelling Bee game. It includes state, validation, scoring, SDL setup, and a frame loop. Text rendering, complete hexagon drawing, mouse hit-testing, and player-facing QA are not implemented yet.
 
 ### Why Assembly?
 
-- **🔥 Maximum Performance**: Zero overhead, direct CPU instructions
-- **💎 Minimal Size**: ~8KB binary (with UPX compression) vs ~97MB Node.js version
-- **⚡ Instant Startup**: <1ms cold start time
-- **🎯 Total Control**: Every byte, every cycle, every register is optimized
-- **🏆 Professional Challenge**: Proving what an expert computer scientist can achieve
+- **🔥 Native Implementation**: Direct CPU instructions with performance still to be measured
+- **💎 Minimal Size**: ~12 KB in the prior documented standard build
+- **⚡ Direct Execution**: Native code with startup performance still to be measured
+- **🎯 Explicit Control**: Game state and rendering scaffolding are written directly in assembly
+- **🏆 Technical Exercise**: A compact base for completing and measuring the player flow
 
 ## 📊 Comparison: Assembly vs Node.js
 
 | Metric | Assembly Version | Node.js SEA Version | Improvement |
 |--------|------------------|---------------------|-------------|
-| **Binary Size** | ~8 KB | ~97 MB | **12,125x smaller** |
-| **Startup Time** | <1 ms | ~100 ms | **100x faster** |
-| **Memory Usage** | ~2 MB | ~50 MB | **25x less** |
-| **CPU Usage** | <1% | ~5% | **5x more efficient** |
+| **Binary Size** | ~12 KB documented | 93.25 MB documented | **7,771x in the prior comparison** |
+| **Startup Time** | Not re-measured | Not re-measured | **Unverified** |
+| **Memory Usage** | Not re-measured | Not re-measured | **Unverified** |
+| **CPU Usage** | Not re-measured | Not re-measured | **Unverified** |
 | **Dependencies** | SDL2 only | Node.js runtime | **Minimal** |
-| **Lines of Code** | ~1,500 | ~5,000+ | **Simpler** |
+| **Lines of Code** | 1,168 | ~5,000+ | **Smaller source count** |
 
 ## ✨ Features
 
-### Fully Implemented
-- ✅ **Complete Game Logic** - All rules, scoring, validation
-- ✅ **Honeycomb UI** - 7 hexagons (1 center + 6 outer)
+### Implemented
+- ✅ **Core Game Logic** - Demo dictionary validation, scoring, and state
+- ⚠️ **Honeycomb UI Scaffold** - Layout calls exist; full hexagon drawing remains TODO
 - ✅ **Word Validation** - Dictionary-based checking
 - ✅ **Scoring System** - Points, pangrams, bonuses
-- ✅ **Input Handling** - Keyboard and mouse
-- ✅ **Visual Feedback** - Colors, messages, animations
+- ⚠️ **Input Handling** - Keyboard paths exist; mouse hit-testing remains TODO
+- ⚠️ **Visual Feedback** - Colors exist; text and messages are not rendered
 - ✅ **Game State** - Current word, found words, score
 - ✅ **Letter Shuffling** - Rearrange outer hexagons
 - ✅ **Message System** - Success, error, info messages
@@ -144,9 +144,7 @@ make run
 - `Space` - Shuffle letters
 - `Escape` - Quit
 
-**Mouse:**
-- Click hexagons to add letters
-- Click buttons for actions
+**Mouse:** Not implemented yet.
 
 ## 🏗️ Architecture
 
@@ -155,7 +153,7 @@ make run
 ```
 asm/
 ├── src/
-│   └── main.asm           # Main game code (~1,500 lines)
+│   └── main.asm           # Prototype source (1,168 lines)
 ├── include/
 │   ├── syscalls.inc       # Linux system calls
 │   ├── sdl.inc            # SDL2 constants
@@ -175,18 +173,18 @@ asm/
 .bss section    - Uninitialized data (SDL handles, buffers)
 .text section   - Executable code (game logic, rendering)
 
-Stack usage     - < 1 KB
-Heap usage      - SDL2 allocations only
-Total memory    - ~2 MB resident
+Stack usage     - Not measured
+Heap usage      - SDL2 allocations plus static buffers
+Total memory    - Not measured
 ```
 
 ### Performance Profile
 
-- **CPU**: <1% on modern x86-64 CPU
-- **FPS**: Locked at 60 FPS (16ms frame time)
-- **Render time**: <2ms per frame
-- **Input latency**: <1ms
-- **Memory bandwidth**: <100 MB/s
+- **CPU**: Not measured
+- **FPS**: Target loop rate is 60 FPS; player-facing rendering is incomplete
+- **Render time**: Not measured
+- **Input latency**: Not measured
+- **Memory bandwidth**: Not measured
 
 ## 🔬 Technical Details
 
@@ -230,8 +228,8 @@ Total memory    - ~2 MB resident
 
 ## 🎯 Design Philosophy
 
-### 1. Professional Quality
-- Production-ready code
+### 1. Reviewable Structure
+- Explicit incomplete areas
 - Error handling
 - Clean architecture
 - Comprehensive comments
@@ -324,12 +322,10 @@ Same as parent project.
 
 ## 🏆 Achievements Unlocked
 
-- ✅ **Assembly Mastery**: Complete game in pure assembly
-- ✅ **Size Champion**: 12,000x smaller than JavaScript version
-- ✅ **Speed Demon**: 100x faster startup
-- ✅ **Memory Miser**: 25x less RAM usage
-- ✅ **Professional**: Production-ready code quality
-- ✅ **Extreme**: Pushed technical boundaries
+- ✅ **Assembly Exercise**: Core game routines in pure assembly
+- ✅ **Compact Build**: ~12 KB in the prior documented build
+- ⚠️ **Performance**: Startup and memory claims require measurement
+- ⚠️ **Gameplay**: Rendering, hit-testing, and player QA remain incomplete
 
 ---
 

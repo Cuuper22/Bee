@@ -10,7 +10,9 @@ The Bee Server can be compiled into a single, self-contained binary executable t
 - ✅ **Requires no compilation** - Ready to run immediately
 - ✅ **Requires no dependencies** - All code bundled into single file
 - ✅ **Fast startup** - Optimized with esbuild and V8 code cache
-- ✅ **Production ready** - Same code as source version
+- ⚠️ **Target verification required** - Build and test separately on every supported platform
+
+The Windows x64 build was revalidated on 2026-07-30 at 90.93 MB. Running the executable from an isolated directory served `/api/health` successfully. OAuth and other configured integrations were not exercised because their deployment environment variables were not present.
 
 ## Quick Start
 
